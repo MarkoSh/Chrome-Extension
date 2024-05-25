@@ -96,7 +96,7 @@ const options = {
 };
 
 const observer = new MutationObserver( records => {
-	const found = records.find( ( record: any ) => record.target.id && 'app' === record.target.id );
+	const found = records.find( ( record: any ) => record.target.id && 'app' === record.target.id ); // Find your selector, id="app" for example
 
 	if ( found ) {
 		// TODO: you moves
