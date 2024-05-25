@@ -70,20 +70,6 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 
 							xhr.capturedResponse[ 'responseJSON' ] = responseJSON;
 						} catch ( error ) {}
-
-						const response 			= xhr.response;
-						const responseText 		= xhr.responseText;
-
-						Object.defineProperty( xhr, "response", {
-							writable: true
-						} );
-
-						Object.defineProperty( xhr, "responseText", {
-							writable: true
-						} );
-
-						xhr.response 			= response;
-						xhr.responseText 		= responseText;
 					}
 
 					return onreadystatechange ? onreadystatechange.apply( this, arguments ) : true;
