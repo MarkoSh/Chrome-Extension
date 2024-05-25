@@ -5,7 +5,8 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 		( (
 			open,
 			setRequestHeader,
-			send
+			send,
+			onreadystatechange
 		) => {
 			xhr.open = function () {
 				const [ method, url, async, user, password ] = [ ...arguments ];
@@ -84,6 +85,8 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 						xhr.response 			= response;
 						xhr.responseText 		= responseText;
 					}
+
+					return onreadystatechange ? onreadystatechange.apply( this, arguments ) : true;
 				};
 
 				return send.apply( this, arguments );
@@ -91,9 +94,27 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 		} )(
 			xhr.open,
 			xhr.setRequestHeader,
-			xhr.send
+			xhr.send,
+			xhr.onreadystatechange,
 		);
 
 		return xhr;
 	}
 } );
+
+const options = {
+	childList				: true,
+	subtree					: true,
+	characterData			: true,
+	attributes				: true,
+};
+
+const observer = new MutationObserver( records => {
+	const found = records.find( ( record: any ) => record.target.id && 'app' === record.target.id );
+
+	if ( found ) {
+		// TODO: you moves
+	}
+} );
+
+observer.observe( document.body, options );
