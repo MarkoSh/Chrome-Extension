@@ -45,7 +45,7 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 					if ( '' != responseHeadersRAW ) {
 						const responseHeaders = responseHeadersRAW.split( "\r\n" ).filter( ( row: any ) => row ).map( ( row: any ) => {
 							const split 		= row.split( ': ' );
-							const name 			= split[ 0 ];
+							const name			= split[ 0 ];
 							const value 		= split[ 1 ].trim();
 							const header: any 	= {};
 
@@ -89,10 +89,10 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 } );
 
 const options = {
-	childList				: true,
-	subtree					: true,
-	characterData			: true,
-	attributes				: true,
+	childList		: true,
+	subtree			: true,
+	characterData	: true,
+	attributes		: true,
 };
 
 const observer = new MutationObserver( records => {
