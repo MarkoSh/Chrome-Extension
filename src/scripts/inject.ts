@@ -58,13 +58,17 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 					}
 
 					if ( 200 === xhr.status && 4 === xhr.readyState ) {
-						const responseJSON 		= JSON.parse( xhr.response );
 						const url 				= new URL( xhr.responseURL );
 
 						xhr.capturedResponse 	= {
-							responseJSON,
 							url
 						};
+
+						try {
+							const responseJSON 		= JSON.parse( xhr.response );
+
+							xhr.capturedResponse[ 'responseJSON' ] = responseJSON;
+						} catch ( error ) {}
 
 						const response 			= xhr.response;
 						const responseText 		= xhr.responseText;
