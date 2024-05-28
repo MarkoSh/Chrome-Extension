@@ -1,7 +1,7 @@
 ( async () => {
-	const resourceTypes = Object.values( chrome.declarativeNetRequest.ResourceType );
+	const resourceTypes	: string[]	= Object.values( chrome.declarativeNetRequest.ResourceType );
 
-	const addRules: Rule[] = [ {
+	const addRules		: Rule[] 	= [ {
 		id		: 1,
 		priority: 1,
 		action	: {
@@ -16,8 +16,8 @@
 		}
 	}, ];
 
-	const currentRules: Rule[] 	= await chrome.declarativeNetRequest.getDynamicRules();
-	const removeRuleIds 		= currentRules.map( rule => rule.id );
+	const currentRules	: Rule[] 	= await chrome.declarativeNetRequest.getDynamicRules();
+	const removeRuleIds	: number[]	= currentRules.map( rule => rule.id );
 
 	await chrome.declarativeNetRequest.updateDynamicRules({
 		removeRuleIds,

@@ -1,6 +1,6 @@
 XMLHttpRequest = new Proxy( XMLHttpRequest, {
 	construct( target ) {
-		const xhr: any = new target();
+		const xhr: XMLHttpRequestEx = new target();
 
 		( (
 			open,
@@ -19,7 +19,7 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 					password
 				};
 
-				return open.apply( this, arguments );
+				return open.apply( this, [ ...arguments ] );
 			};
 			xhr.setRequestHeader = function () {
 				const [ header, value ] = [ ...arguments ];
@@ -28,7 +28,7 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 
 				xhr.requestHeaders[ header ] = value;
 
-				return setRequestHeader.apply( this, arguments );
+				return setRequestHeader.apply( this, [ ...arguments ] );
 			};
 			xhr.send = function () {
 				const [ body ] = [ ...arguments ];
@@ -72,10 +72,10 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 						} catch ( error ) {}
 					}
 
-					return onreadystatechange ? onreadystatechange.apply( this, arguments ) : true;
+					return onreadystatechange ? onreadystatechange.apply( this, [ ...arguments ] ) : true;
 				};
 
-				return send.apply( this, arguments );
+				return send.apply( this, [ ...arguments ] );
 			};
 		} )(
 			xhr.open,
