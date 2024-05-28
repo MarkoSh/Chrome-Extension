@@ -50,6 +50,7 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 							const header: any 	= {};
 
 							header[ name ] = value;
+							
 							return header;
 						} ).reduce( ( acc: any, next: any ) => {
 							return Object.assign( acc, next );
