@@ -6,7 +6,8 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 			open,
 			setRequestHeader,
 			send,
-			onreadystatechange
+			onreadystatechange,
+			onloadend,
 		) => {
 			xhr.open = function () {
 				const [ method, url, async, user, password ] = [ ...arguments ];
@@ -37,6 +38,8 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 					body
 				}
 
+				onreadystatechange = xhr.onreadystatechange;
+
 				xhr.onreadystatechange = function () {
 					const [ event ] 			= [ ...arguments ];
 
@@ -50,7 +53,7 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 							const header: any 	= {};
 
 							header[ name ] = value;
-							
+
 							return header;
 						} ).reduce( ( acc: any, next: any ) => {
 							return Object.assign( acc, next );
@@ -76,6 +79,14 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 					return onreadystatechange ? onreadystatechange.apply( this, [ ...arguments ] ) : true;
 				};
 
+				onloadend = xhr.onloadend;
+
+				xhr.onloadend = function () {
+					const [ event ] 			= [ ...arguments ];
+
+					return onloadend ? onloadend.apply( this, [ ...arguments ] ) : true;
+				};
+
 				return send.apply( this, [ ...arguments ] );
 			};
 		} )(
@@ -83,6 +94,7 @@ XMLHttpRequest = new Proxy( XMLHttpRequest, {
 			xhr.setRequestHeader,
 			xhr.send,
 			xhr.onreadystatechange,
+			xhr.onloadend,
 		);
 
 		return xhr;
